@@ -6,6 +6,7 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.xml  { render :xml => @quotes }
       format.json { render :json => @quotes }
     end
   end

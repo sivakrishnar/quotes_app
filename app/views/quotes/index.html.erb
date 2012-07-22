@@ -11,7 +11,7 @@
 
 <% @quotes.each do |quote| %>
   <tr>
-    <td class='quotes'><%= quote.category_id %></td>
+    <td class='quotes'><%= quote.category.name %></td>
     <td class='quotes'><%= quote.quote %></td>
     <td class='quotes'><%= quote.author %></td>
     <td class='quotes'><%= quote.tags %></td>
