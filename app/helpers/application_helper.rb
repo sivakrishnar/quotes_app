@@ -27,4 +27,11 @@ module ApplicationHelper
   def getAppUrl()
    return 'http://quotesapp.heroku.com/'
   end
+
+  def uri_escape(url)
+    require 'uri'
+    str = URI.escape(url)
+    return str
+  end
+
 end

@@ -20,7 +20,7 @@ class UserSessionController < ApplicationController
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
-       graph_url = "https://graph.facebook.com/me?access_token=#{access_token.uri_escape}"
+       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
        doFacebookLogin(user)
