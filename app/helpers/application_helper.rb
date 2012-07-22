@@ -25,6 +25,6 @@ module ApplicationHelper
   end
   
   def getAppUrl()
-   return 'http://localhost:3000'
+   return 'http://quotesapp.heroku.com/'
   end
 end
