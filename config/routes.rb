@@ -3,6 +3,8 @@ Webapp::Application.routes.draw do
 
   resources :categories
 
+  match '/login' => 'user_session#login_facebook'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
