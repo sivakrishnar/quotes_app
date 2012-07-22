@@ -32,4 +32,8 @@ class UserSessionController < ApplicationController
     end
   end
 
+  def doFacebookLogin(user)
+    puts "#{user} logged in successfully with facebook"
+  end
+
 end
