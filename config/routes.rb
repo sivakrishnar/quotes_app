@@ -3,8 +3,8 @@ Webapp::Application.routes.draw do
 
   resources :categories
 
-  match '/login' => 'user_session#login_facebook'
-
+  match '/fblogin' => 'user_session#login_facebook'
+  match '/login/facebook/callback' => 'user_session#login_facebook_callback'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
