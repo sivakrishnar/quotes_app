@@ -34,6 +34,8 @@ class UserSessionController < ApplicationController
 
   def doFacebookLogin(user)
     puts "#{user} logged in successfully with facebook"
+    session[:user] = user[:first_name]
+    session[:loggedin] = true
   end
 
 end
