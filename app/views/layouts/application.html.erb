@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Webapp</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag    "application", "bootstrap", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
@@ -27,6 +27,8 @@
      <% ['facebook'].each do |service_provider| %>
        <%= link_to image_tag("#{service_provider}_64.png", :size => "64x64"), :fblogin %>
      <% end %>
+  <% else %>
+    <%= session[:currentuser] %>
   <% end %>   
   <div class="innertube">
    <%= yield %>
