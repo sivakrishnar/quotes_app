@@ -75,7 +75,7 @@ class UserSessionController < ApplicationController
       p user
       p user[:id]
       puts user['id']
-      client.selection.user(user[:id]).feed.publish!(:message => quote.quote, :name => 'QuotesApp')
+      client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp')
     end
   end
 
