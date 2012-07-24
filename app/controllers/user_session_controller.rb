@@ -14,7 +14,7 @@ class UserSessionController < ApplicationController
 
     if(params[:error] and params[:error] != '')
        flash[:error] = str_error
-       redirect_to '/login'
+       redirect_to '/fblogin'
     elsif(params[:code] and params[:code] != '')
        code = params[:code]
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
@@ -44,7 +44,7 @@ class UserSessionController < ApplicationController
        redirect_to '/quotes'
     else
        flash[:error] = str_error
-       redirect_to '/login'
+       redirect_to '/fblogin'
     end
   end
 
