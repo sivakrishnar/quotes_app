@@ -61,6 +61,7 @@ class UserSessionController < ApplicationController
   def logout_facebook
     url = "https://www.facebook.com/logout.php?next=#{getAppUrl()}&access_token=#{session[:access_token]}"
     puts url
+    reset_session
     redirect_to url
   end
 
