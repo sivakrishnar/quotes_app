@@ -66,12 +66,15 @@ class UserSessionController < ApplicationController
   end
 
   def post_to_facebook()
-   login_facebook unless session[:access_token]
+   login_facebook unless session or session.has_key?access_token or session[:access_token]
    if params[:quote_id]
       quote = Quote.find(params[:quote_id])
       puts "Posting quote #{quote.quote}"
       client = FBGraph::Client.new(:client_id => getFacebookApiKey(), :secret_id => getFacebookSecret() ,:token => session[:access_token])
       user = client.selection.me.info!
+      p user
+      p user[:id]
+      puts user['id']
       client.selection.user(user[:id]).feed.publish!(:message => quote.quote, :name => 'QuotesApp')
     end
   end
