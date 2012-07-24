@@ -7,6 +7,7 @@
        <blockquote>
        <p><%= quote.quote %> </p>
        <small><%= quote.author %></small>
+       <a href='/posttofb?quote_id=<%= quote.id %>'>Share</a>
        Category: <a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name %></a> &nbsp;&nbsp;&nbsp;<%= quote.tags %>&nbsp;&nbsp;&nbsp;</blockquote>
 <% end %>
 

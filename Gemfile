@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
-gem 'omniauth-facebook'
+##gem 'omniauth-facebook'
 gem 'rest-client'
+gem 'fb_graph'
 
 group :development do
    gem 'sqlite3'

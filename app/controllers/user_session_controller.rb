@@ -20,6 +20,7 @@ class UserSessionController < ApplicationController
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
+       session[:access_token] = access_token
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
@@ -37,6 +38,17 @@ class UserSessionController < ApplicationController
     puts 'Storing first name in session ...'+user['first_name']
     session[:currentuser] = user['first_name']
     session[:loggedIn] = true
+  end
+
+  def post_to_facebook()
+   login_facebook unless session[:access_token]
+   if params[:quote_id]
+      quote = Quote.find(params[:quote_id])
+      me = FbGraph::User.me(session[:access_token])
+      me.feed!(
+        :message => quote.quote
+	)
+    end
   end
 
 end
