@@ -2,8 +2,18 @@ class QuotesController < ApplicationController
   # GET /quotes
   # GET /quotes.json
   def index
-    @quotes = Quote.all
+    @categories = Category.all
 
+    if params[:category]
+      category = Category.find_by_name(params[:category])
+      unless category
+        @quotes = []
+      else	
+        @quotes = Quote.find_all_by_category_id(category.id)
+      end	
+    else
+      @quotes = Quote.all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @quotes }

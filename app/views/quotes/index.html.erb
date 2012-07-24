@@ -1,24 +1,14 @@
-<h1>Listing quotes</h1>
-
-<table class='quotes'>
-  <tr>
-    <th  class='quotes'>Category</th>
-    <th class='quotes'>Quote</th>
-    <th class='quotes'>Author</th>
-    <th class='quotes'>Tags</th>
-    <th class='quotes'>Edit</th>
-  </tr>
-
-<% @quotes.each do |quote| %>
-  <tr>
-    <td class='quotes'><%= quote.category.name %></td>
-    <td class='quotes'><%= quote.quote %></td>
-    <td class='quotes'><%= quote.author %></td>
-    <td class='quotes'><%= quote.tags %></td>
-    <td class='quotes'><%= link_to 'Edit', edit_quote_path(quote) %></td>
-  </tr>
+<% @categories.uniq.sort.each do |cat| %>
+ <a href='/quotes?category=<%= cat.name %>'><%= cat.name %></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <% end %>
-</table>
+<br /><br />
+<h1>Quotes</h1>
+<% @quotes.each do |quote| %>
+       <blockquote>
+       <p><%= quote.quote %> </p>
+       <small><%= quote.author %></small>
+       Category: <a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name %></a> &nbsp;&nbsp;&nbsp;<%= quote.tags %>&nbsp;&nbsp;&nbsp;</blockquote>
+<% end %>
 
 <br />
 

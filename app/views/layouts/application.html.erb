@@ -10,7 +10,6 @@
 
 <div id="framecontentLeft">
    <div class="innertube">
-
   </div>
 </div>
 
@@ -22,7 +21,7 @@
 
 
 <div id="maincontent">
-  <img src='<%=asset_path "quote_header.jpg"%>' />
+  <img src='<%=asset_path "quote_header.jpg"%>' width="1200" height='100' />
   <% unless isLoggedIn? %>
      <% ['facebook'].each do |service_provider| %>
        <%= link_to image_tag("#{service_provider}_64.png", :size => "64x64"), :fblogin %>

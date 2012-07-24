@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
        if session[:currentuser]
          return session[:currentuser]
        else
-         return ''
+         return 'Not Logged In'
        end	 
     end
 
