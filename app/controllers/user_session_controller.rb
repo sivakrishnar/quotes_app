@@ -1,7 +1,7 @@
 class UserSessionController < ApplicationController
   # Login Facebook
   def login_facebook
-     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_actions&redirect_uri=#{getAppUrl()}login/facebook/callback"
+     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_actions&redirect_uri=#{getAppUrl()}login/facebook/callback&response_type=token"
      redirect_to url
   end
 
@@ -22,6 +22,18 @@ class UserSessionController < ApplicationController
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
        puts uri_escape(access_token)
+       access_token = code
+       session[:access_token] = uri_escape(access_token)
+       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
+       puts graph_url
+       r = RestClient.get graph_url
+       user = JSON.parse(r.to_s)
+       doFacebookLogin(user)
+       flash[:notice] = "You have logged in successfully."
+       redirect_to '/quotes'
+    elsif params[:access_token] and params[:access_token] != ''
+       access_token = params[:acces_token]
+       puts "access token is #{access_token}"
        session[:access_token] = uri_escape(access_token)
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        puts graph_url
