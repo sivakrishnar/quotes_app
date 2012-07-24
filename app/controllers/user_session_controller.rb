@@ -33,7 +33,7 @@ class UserSessionController < ApplicationController
   end
 
   def doFacebookLogin(user)
-    puts "#{user} logged in successfully with facebook"
+    puts "#{user} logged in successfully with facebook #{user.class}"
     puts 'Storing first name in session ...'+user[:first_name]
     session[:currentuser] = user[:first_name]
     session[:loggedIn] = true
