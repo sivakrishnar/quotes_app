@@ -23,7 +23,6 @@ class UserSessionController < ApplicationController
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
        puts uri_escape(access_token)
-       access_token = code
        session[:access_token] = uri_escape(access_token)
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        puts graph_url
