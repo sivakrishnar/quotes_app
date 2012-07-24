@@ -18,10 +18,13 @@ class UserSessionController < ApplicationController
     elsif(params[:code] and params[:code] != '')
        code = params[:code]
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
+       puts url
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
+       puts uri_escape(access_token)
        session[:access_token] = uri_escape(access_token)
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
+       puts graph_url
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
        doFacebookLogin(user)
