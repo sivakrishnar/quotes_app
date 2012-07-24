@@ -1,7 +1,7 @@
 class UserSessionController < ApplicationController
   # Login Facebook
   def login_facebook
-     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_actions&redirect_uri=#{getAppUrl()}login/facebook/callback&response_type=token"
+     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_actions&redirect_uri=#{getAppUrl()}login/facebook/callback"
      redirect_to url
   end
 
@@ -14,6 +14,7 @@ class UserSessionController < ApplicationController
 
     if(params[:error] and params[:error] != '')
        flash[:error] = str_error
+       puts params[:error]
        redirect_to '/fblogin'
     elsif(params[:code] and params[:code] != '')
        code = params[:code]
@@ -44,6 +45,7 @@ class UserSessionController < ApplicationController
        redirect_to '/quotes'
     else
        flash[:error] = str_error
+       puts "unknown error"
        redirect_to '/fblogin'
     end
   end
