@@ -1,7 +1,7 @@
 class UserSessionController < ApplicationController
   # Login Facebook
   def login_facebook
-     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email&redirect_uri=#{getAppUrl()}login/facebook/callback"
+     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_actions&redirect_uri=#{getAppUrl()}login/facebook/callback"
      redirect_to url
   end
 
