@@ -23,13 +23,13 @@ class UserSessionController < ApplicationController
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
        puts uri_escape(access_token)
-       session[:access_token] = uri_escape(access_token)
+       session[:access_token] = access_token
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        puts graph_url
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
        doFacebookLogin(user)
-       flash[:notice] = "You have logged in successfully."
+       flash[:notice] = "You have logged in successfully, access_token is #{session[:access_token]}"
        redirect_to '/quotes'
     elsif params[:access_token] and params[:access_token] != ''
        access_token = params[:acces_token]
@@ -55,6 +55,11 @@ class UserSessionController < ApplicationController
     session[:currentuser] = user['first_name']
     session[:username] = user['username']
     session[:loggedIn] = true
+  end
+
+  def logout_facebook
+    url = "https://www.facebook.com/logout.php?next=/quotes&access_token=#{session[:access_token]}"
+    redirect_to url
   end
 
   def post_to_facebook()
