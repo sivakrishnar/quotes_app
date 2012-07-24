@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentuser
+    helper_method :isLoggedIn?, :currentUser
 
     protect_from_forgery
 
