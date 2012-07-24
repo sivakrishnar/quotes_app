@@ -69,12 +69,9 @@ class UserSessionController < ApplicationController
    login_facebook unless session[:access_token]
    if params[:quote_id]
       quote = Quote.find(params[:quote_id])
-      me = FbGraph::User.me(session[:access_token])
-      me.feed!(
-        :message => quote.quote,
-        :description => 'Posted by QuotesApp'
-        )	
-     end
+      client = FBGraph::Client.new(:client_id => getFacebookApiKey(), :secret_id => getFacebookSecret() ,:token => session[:access_token])
+      client.selection.post('id').comments.publish!(:message => quote.quote)
+    end
   end
 
 end
