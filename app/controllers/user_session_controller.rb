@@ -46,7 +46,6 @@ class UserSessionController < ApplicationController
    if params[:quote_id]
       quote = Quote.find(params[:quote_id])
       me = FbGraph::User.me(session[:access_token])
-      me = FbGraph::User.fetch(session[:username])
       me.feed!(
         :message => quote.quote,
         :description => 'Posted by QuotesApp'
