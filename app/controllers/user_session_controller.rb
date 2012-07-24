@@ -17,12 +17,13 @@ class UserSessionController < ApplicationController
        puts params[:error]
        redirect_to '/fblogin'
     elsif(params[:code] and params[:code] != '')
+      puts "Got code back..."
        code = params[:code]
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
        puts url
        r = RestClient.get url
        access_token = r.to_s.split("access_token=")[1]
-       puts uri_escape(access_token)
+       puts(access_token)
        session[:access_token] = access_token
        graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
        puts graph_url
@@ -58,7 +59,8 @@ class UserSessionController < ApplicationController
   end
 
   def logout_facebook
-    url = "https://www.facebook.com/logout.php?next=/quotes&access_token=#{session[:access_token]}"
+    url = "https://www.facebook.com/logout.php?next=#{getAppUrl()}&access_token=#{session[:access_token]}"
+    puts url
     redirect_to url
   end
 
