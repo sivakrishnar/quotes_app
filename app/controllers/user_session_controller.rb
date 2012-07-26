@@ -64,7 +64,7 @@ class UserSessionController < ApplicationController
       p user
       p user[:id]
       puts user['id']
-      client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp', :link => getAppUrl+'quotes/'+quote.id)
+      client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp', :link => getAppUrl+'quotes/'+quote.id.to_s)
     end
   end
 
