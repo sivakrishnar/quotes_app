@@ -63,7 +63,7 @@ class UserSessionController < ApplicationController
       quote = Quote.find(params[:quote_id])
       puts "Posting quote #{quote.quote}"
       link = getAppUrl()+'quotes/'+quote.id.to_s
-      url = "https://graph.facebook.com/me/feed?access_token=#{uri_escape(session[:access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=uri_escape('Posted via QuotesApp')"
+      url = "https://graph.facebook.com/me/feed?access_token=#{uri_escape(session[:access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=#{uri_escape('Posted via QuotesApp')}"
       r = RestClient.get url
       responsegot = JSON.parse r.to_s
       flash[:notice] = 'Share on your facebook timeline success...'
