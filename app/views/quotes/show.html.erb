@@ -1,25 +1,12 @@
 <p id="notice"><%= notice %></p>
 
+<blockquote>
 <p>
-  <b>Category:</b>
-  <%= @quote.category_id %>
-</p>
+  <%= @quote.quote %></p>
+  <small><%= @quote.author %></small>
 
-<p>
-  <b>Quote:</b>
-  <%= @quote.quote %>
-</p>
+<br /> Category: <%= @quote.category.name %>&nbsp;&nbsp;&nbsp;<%= @quote.tags %>
 
-<p>
-  <b>Author:</b>
-  <%= @quote.author %>
-</p>
+</blockquote>
 
-<p>
-  <b>Tags:</b>
-  <%= @quote.tags %>
-</p>
-
-
-<%= link_to 'Edit', edit_quote_path(@quote) %> |
 <%= link_to 'Back', quotes_path %>
