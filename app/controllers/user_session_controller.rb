@@ -63,12 +63,20 @@ class UserSessionController < ApplicationController
       quote = Quote.find(params[:quote_id])
       puts "Posting quote #{quote.quote}"
       link = getAppUrl()+'quotes/'+quote.id.to_s
+      puts session[:access_token]
+      puts uri_escape(session[:access_token]) 
       url = "https://graph.facebook.com/#{session[:username]}/feed?access_token=#{uri_escape(session[:access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=#{uri_escape('Posted via QuotesApp')}"
       puts url
-      r = RestClient.post url   #####"https://graph.facebook.com/#{session[:username]}/feed", { :access_token => "#{session[:access_token]}", :message => "#{quote.quote}" }
-      responsegot = JSON.parse r.to_s
-      flash[:notice] = 'Share on your facebook timeline success...'
-      redirect_to '/quotes'
+      begin
+        r = RestClient.post "https://graph.facebook.com/#{session[:username]}/feed", { :access_token => session[:access_token], :message => quote.quote }
+        responsegot = JSON.parse r.to_s
+        flash[:notice] = 'Share on your facebook timeline success...'
+        redirect_to '/quotes'
+      rescue Exception => ex.message
+        flash[:notice] ex
+        puts ex
+        redirect_to '/quotes'
+      end
       #client = FBGraph::Client.new(:client_id => getFacebookApiKey(), :secret_id => getFacebookSecret() ,:token => session[:access_token])
       #user = client.selection.me.info!
       #client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp', :link => getAppUrl()+'quotes/'+quote.id.to_s)
