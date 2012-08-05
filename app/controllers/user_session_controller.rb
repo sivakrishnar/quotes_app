@@ -72,8 +72,8 @@ class UserSessionController < ApplicationController
         responsegot = JSON.parse r.to_s
         flash[:notice] = 'Share on your facebook timeline success...'
         redirect_to '/quotes'
-      rescue Exception => ex.message
-        flash[:notice] ex
+      rescue Exception => ex
+        flash[:notice] ex.message
         puts ex
         redirect_to '/quotes'
       end
