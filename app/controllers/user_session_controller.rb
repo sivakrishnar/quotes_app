@@ -73,7 +73,7 @@ class UserSessionController < ApplicationController
         flash[:notice] = 'Share on your facebook timeline success...'
         redirect_to '/quotes'
       rescue Exception => ex
-        flash[:notice] ex.message
+        flash[:notice] = ex.message
         puts ex
         redirect_to '/quotes'
       end
