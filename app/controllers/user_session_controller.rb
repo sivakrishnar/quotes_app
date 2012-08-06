@@ -22,6 +22,7 @@ class UserSessionController < ApplicationController
        url = "https://graph.facebook.com/oauth/access_token?client_id=#{getFacebookApiKey()}&client_secret=#{getFacebookSecret()}&redirect_uri=#{getAppUrl()}login/facebook/callback&code=#{code}"
        puts url
        r = RestClient.get url
+       puts r.to_s
        access_token = r.to_s.split("access_token=")[1]
        puts(access_token)
        session[:access_token] = access_token
