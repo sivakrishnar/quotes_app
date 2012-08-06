@@ -24,10 +24,9 @@ class UserSessionController < ApplicationController
        r = RestClient.get url
        puts r.to_s.gsub(/\&expires\=\d*$/,'')
        access_token = r.to_s.split("access_token=")[1]
-       puts(access_token)
        session[:access_token] = access_token.gsub(/\&expires\=\d*$/,'')
-       puts session[:access_token]
-       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(access_token)}"
+       puts uri_escape(session[:access_token])
+       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(session[:access_token])}"
        puts graph_url
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
