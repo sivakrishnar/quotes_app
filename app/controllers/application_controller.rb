@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentUser
+    helper_method :isLoggedIn?, :currentUser, :getTags
 
     protect_from_forgery
 
@@ -19,6 +19,21 @@ class ApplicationController < ActionController::Base
        else
          return 'Not Logged In'
        end	 
+    end
+    
+    def getTags
+      quotes = Quote.select('tags').find(:all)
+      @alltags = [] 
+      quotes.each do |quote|
+        if quote
+          if quote.tags
+            tags = quote.tags.split(' ')
+            tags.each do |tag|
+              @alltags.push tag unless @alltags.include?tag
+            end
+          end
+        end
+      end
     end
 
 end

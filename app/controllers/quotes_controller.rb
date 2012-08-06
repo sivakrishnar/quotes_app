@@ -14,6 +14,8 @@ class QuotesController < ApplicationController
     else
       @quotes = Quote.all
     end
+    @tags = getTags
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @quotes }
@@ -46,6 +48,7 @@ class QuotesController < ApplicationController
 
   # GET /quotes/1/edit
   def edit
+    @categories = Category.all
     @quote = Quote.find(params[:id])
   end
 

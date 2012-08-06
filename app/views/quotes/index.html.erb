@@ -2,15 +2,18 @@
  <a href='/quotes?category=<%= cat.name %>'><%= cat.name %></a>&nbsp;&nbsp;&nbsp;&nbsp;
 <% end %>
 <br /><br />
-<h1>Quotes</h1>
+<h1>Quotes</h1><br />
 <% @quotes.each do |quote| %>
        <blockquote>
        <p><%= quote.quote %> </p>
        <small><%= quote.author %></small>
-       <a href='/posttofb?quote_id=<%= quote.id %>'>Share</a><br />
-       Category: <a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name %></a> &nbsp;&nbsp;&nbsp;<%= quote.tags %>&nbsp;&nbsp;&nbsp;</blockquote>
+       <a href='/posttofb?quote_id=<%= quote.id %>'>Share</a><br /><br />
+       Category: <a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name %></a> &nbsp;&nbsp;&nbsp;Tags: <%= quote.tags %>&nbsp;&nbsp;&nbsp;</blockquote>
 <% end %>
 
+<% @alltags.each do |tag| %>
+       <%= tag %>
+<% end %>
 <br />
 
 <%= link_to 'New Quote', new_quote_path %>
