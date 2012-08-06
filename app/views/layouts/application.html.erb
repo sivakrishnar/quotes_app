@@ -23,11 +23,9 @@
 <div id="maincontent">
   <img src='<%=asset_path "quote_header.jpg"%>' width="1200" height='100' />
            <% unless isLoggedIn? %>
-             <% ['facebook'].each do |service_provider| %>
-               &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("#{service_provider}_64.png", :size => "64x64"), :fblogin %>
-             <% end %>
+              <%= link_to image_tag('login-facebook-button.png'), :fblogin %>
            <% else %>
-             <%= currentUser %>
+              <span class="label">Logged in as: <%= currentUser %></span>
            <% end %> 
   <div class="innertube">
    <%= yield %>

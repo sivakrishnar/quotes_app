@@ -69,7 +69,7 @@ class UserSessionController < ApplicationController
       url = "https://graph.facebook.com/#{session[:username]}/feed?access_token=#{uri_escape(session[:access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=#{uri_escape('Posted via QuotesApp')}"
       puts url
       begin
-        r = RestClient.post "https://graph.facebook.com/#{session[:username]}/feed", { :access_token => session[:access_token], :message => quote.quote }
+        r = RestClient.post "https://graph.facebook.com/#{session[:username]}/feed", { :access_token => session[:access_token], :message => "#{quote.quote} -- by #{quote.author}", :link => "http://quotesapp.herokuapp.com/quotes/#{params[:quote_id]}", :caption => "Shared via quotesapp", :icon => "http://quotesapp.herokuapp.com/assets/quote_header.jpg" }
         responsegot = JSON.parse r.to_s
         flash[:notice] = 'Share on your facebook timeline success...'
         redirect_to '/quotes'
