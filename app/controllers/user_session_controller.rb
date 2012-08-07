@@ -24,8 +24,9 @@ class UserSessionController < ApplicationController
     # session[:twitter_request_token] = request_token
     # access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
     puts "Requested twitter token and stored access token is #{session[:twitter_access_token]}"
-    puts "Now redirecting to #{request_token.authorize_url}"
-    #  redirect_to request_token.authorize_url
+    puts "Now redirecting to home page"
+    flash[:notice] = 'Successfully attached twitter account...'
+    redirect_to "/quotes"
   end
 
   # Login Facebook callback
