@@ -8,16 +8,24 @@ class UserSessionController < ApplicationController
   # Login Twitter
   def login_twitter
     require 'oauth/consumer'
-    @consumer=OAuth::Consumer.new "0pq5YGD7IU2CFYbA2cYiw", 
-                                  "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII", 
-                                  {:site=>"https://api.twitter.com"}
-    request_token = @consumer.get_request_token
-    session[:twitter_request_token] = request_token
-    access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
+    oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
+    oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
+    
+    @consumer=OAuth::Consumer.new   oauth_token, 
+    				    oauth_token_secret, 
+                                    {:site=>"https://api.twitter.com", :scheme => :header}
+    token_hash = {   :oauth_token => oauth_token,
+                     :oauth_token_secret => oauth_token_secret
+                 }
+    access_token = OAuth::AccessToken.from_hash(@consumer, token_hash )
     session[:twitter_access_token] = access_token
-    puts 'Requested twitter token and stored request token in session '+session[:twitter_request_token]+" and access token is #{session[:twitter_access_token]}"
+
+    #request_token = @consumer.get_request_token
+    # session[:twitter_request_token] = request_token
+    # access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
+    puts "Requested twitter token and stored access token is #{session[:twitter_access_token]}"
     puts "Now redirecting to #{request_token.authorize_url}"
-    redirect_to request_token.authorize_url
+    #  redirect_to request_token.authorize_url
   end
 
   # Login Facebook callback
