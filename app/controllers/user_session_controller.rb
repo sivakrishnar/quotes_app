@@ -18,24 +18,11 @@ class UserSessionController < ApplicationController
                                      :request_token_path => "/oauth/request_token",
                                      :authorize_path => "/oauth/authorize",
                                      :access_token_path => "/oauth/access_token",
+                                     :oauth_callback => "#{getAppUrl()}login/twitter/callback"
                                      :http_method => :get}
     request_token = @consumer.get_request_token
     session[:twitter_request_token] = request_token
-    redirect_to request_token.authorize_url + "&oauth_callback=" + CGI.escape("http://quotesapp.herokuapp.com/login/twitter/callback")
-
-    #token_hash = {   :oauth_token => oauth_token,
-    #                 :oauth_token_secret => oauth_token_secret
-    #             }
-    #access_token = OAuth::AccessToken.from_hash(@consumer, token_hash )
-    #session[:twitter_access_token] = access_token
-
-    #request_token = @consumer.get_request_token
-    # session[:twitter_request_token] = request_token
-    # access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
-    #puts "Requested twitter token and stored access token is #{session[:twitter_access_token]}"
-    #puts "Now redirecting to home page"
-    #flash[:notice] = 'Successfully attached twitter account...'
-    #redirect_to "/quotes"
+    redirect_to request_token.authorize_url
   end
   
   # Login Twitter callback
@@ -135,6 +122,7 @@ class UserSessionController < ApplicationController
         link = getAppUrl()+'quotes/'+quote.id.to_s
         puts session[:twitter_access_token]
         begin
+          access_token = session[:twitter_access_token]
           post_results = access_token.post "/api/user/update.xml", { "name" => "Justin Kan" }
           responsegot = JSON.parse post_results.to_s
           puts "response got: #{responsegot}"
