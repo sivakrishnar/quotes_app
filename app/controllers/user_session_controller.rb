@@ -13,20 +13,39 @@ class UserSessionController < ApplicationController
     
     @consumer=OAuth::Consumer.new   oauth_token, 
     				    oauth_token_secret, 
-                                    {:site=>"https://api.twitter.com", :scheme => :header}
-    token_hash = {   :oauth_token => oauth_token,
-                     :oauth_token_secret => oauth_token_secret
-                 }
-    access_token = OAuth::AccessToken.from_hash(@consumer, token_hash )
-    session[:twitter_access_token] = access_token
+                                    {:site=>"https://api.twitter.com",
+                                     :scheme => :header, 
+                                     :request_token_path => "/oauth/request_token",
+                                     :authorize_path => "/oauth/authorize",
+                                     :access_token_path => "/oauth/access_token",
+                                     :http_method => :get}
+    request_token = @consumer.get_request_token
+    session[:twitter_request_token] = request_token
+    redirect_to request_token.authorize_url + "&oauth_callback=" + CGI.escape("http://quotesapp.herokuapp.com/login/twitter/callback")
+
+    #token_hash = {   :oauth_token => oauth_token,
+    #                 :oauth_token_secret => oauth_token_secret
+    #             }
+    #access_token = OAuth::AccessToken.from_hash(@consumer, token_hash )
+    #session[:twitter_access_token] = access_token
 
     #request_token = @consumer.get_request_token
     # session[:twitter_request_token] = request_token
     # access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
-    puts "Requested twitter token and stored access token is #{session[:twitter_access_token]}"
-    puts "Now redirecting to home page"
-    flash[:notice] = 'Successfully attached twitter account...'
-    redirect_to "/quotes"
+    #puts "Requested twitter token and stored access token is #{session[:twitter_access_token]}"
+    #puts "Now redirecting to home page"
+    #flash[:notice] = 'Successfully attached twitter account...'
+    #redirect_to "/quotes"
+  end
+  
+  # Login Twitter callback
+  def login_twitter_callback
+    access_token = session[:twitter_request_token].get_access_token
+    session[:twitter_access_token] = access_token
+    puts access_token
+    puts "Redirecting to home page after twitter authentication"
+    flash[:notice] = "Successfully authenticated twitter account to post quotes..."
+    redirect_to '/quotes'
   end
 
   # Login Facebook callback
@@ -106,6 +125,27 @@ class UserSessionController < ApplicationController
       #user = client.selection.me.info!
       #client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp', :link => getAppUrl()+'quotes/'+quote.id.to_s)
     end
+  end
+  
+   def post_to_twitter()
+     login_twitter unless session or session.has_key?twitter_access_token or session[:twitter_access_token]
+     if params[:quote_id]
+        quote = Quote.find(params[:quote_id])
+        puts "Tweeting quote #{quote.quote}"
+        link = getAppUrl()+'quotes/'+quote.id.to_s
+        puts session[:twitter_access_token]
+        begin
+          post_results = access_token.post "/api/user/update.xml", { "name" => "Justin Kan" }
+          responsegot = JSON.parse post_results.to_s
+          puts "response got: #{responsegot}"
+          flash[:notice] = 'Tweet on your twitter account success...'
+          redirect_to '/quotes'
+        rescue Exception => ex
+          flash[:notice] = ex.message
+          puts ex
+          redirect_to '/quotes'
+        end
+      end
   end
 
 end

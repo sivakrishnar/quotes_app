@@ -10,7 +10,8 @@ Webapp::Application.routes.draw do
 
   match '/twitterlogin' => 'user_session#login_twitter'
   match '/login/twitter/callback' => 'user_session#login_twitter_callback'
-  
+  match '/posttotwitter' => 'user_session#post_to_twitter'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
