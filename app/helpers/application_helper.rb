@@ -26,7 +26,7 @@ module ApplicationHelper
   
   def getAppUrl()
    ###return 'http://localhost:3000/'
-   return 'http://quotesapp.heroku.com/'
+   return 'http://quotesapp.herokuapp.com/'
   end
 
   def uri_escape(url)
