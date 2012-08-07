@@ -4,6 +4,21 @@ class UserSessionController < ApplicationController
      url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_stream&redirect_uri=#{getAppUrl()}login/facebook/callback"
      redirect_to url
   end
+  
+  # Login Twitter
+  def login_twitter
+    require 'oauth/consumer'
+    @consumer=OAuth::Consumer.new "0pq5YGD7IU2CFYbA2cYiw", 
+                                  "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII", 
+                                   {:site=>"https://api.twitter.com/oauth/request_token"}
+    request_token = @consumer.get_request_token
+    session[:twitter_request_token] = request_token
+    access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
+    session[:twitter_access_token] = access_token
+    puts 'Requested twitter token and stored request token in session '+session[:twitter_request_token]+" and access token is #{session[:twitter_access_token]}"
+    puts "Now redirecting to #{request_token.authorize_url}"
+    redirect_to request_token.authorize_url
+  end
 
   # Login Facebook callback
   def login_facebook_callback

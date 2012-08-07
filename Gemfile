@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.6'
 gem 'rest-client'
 gem 'fbgraph'
+gem 'oauth'
 
 group :development do
    gem 'sqlite3'
