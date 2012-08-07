@@ -12,10 +12,10 @@ class UserSessionController < ApplicationController
     client = TwitterOAuth::Client.new(
       :consumer_key => oauth_token,
       :consumer_secret => oauth_token_secret)
-      
-   request_token = client.request_token(:oauth_callback => oauth_confirm_url)
-   #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow 
-   #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
+    oauth_confirm_url = getAppUrl+'login/twitter/callback'  
+    request_token = client.request_token(:oauth_callback => oauth_confirm_url)
+    #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow 
+    #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
    
   
    request_token.authorize_url
