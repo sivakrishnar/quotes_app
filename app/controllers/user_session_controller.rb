@@ -18,7 +18,7 @@ class UserSessionController < ApplicationController
                                      :request_token_path => "/oauth/request_token",
                                      :authorize_path => "/oauth/authorize",
                                      :access_token_path => "/oauth/access_token",
-                                     :oauth_callback => "#{getAppUrl()}login/twitter/callback"
+                                     :oauth_callback => "#{getAppUrl()}login/twitter/callback",
                                      :http_method => :get}
     request_token = @consumer.get_request_token
     session[:twitter_request_token] = request_token
