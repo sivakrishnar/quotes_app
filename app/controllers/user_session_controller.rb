@@ -10,7 +10,7 @@ class UserSessionController < ApplicationController
     require 'oauth/consumer'
     @consumer=OAuth::Consumer.new "0pq5YGD7IU2CFYbA2cYiw", 
                                   "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII", 
-                                   {:site=>"https://api.twitter.com/oauth/request_token"}
+                                  {:site=>"https://api.twitter.com"}
     request_token = @consumer.get_request_token
     session[:twitter_request_token] = request_token
     access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
