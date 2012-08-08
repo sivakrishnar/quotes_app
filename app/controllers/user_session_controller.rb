@@ -18,7 +18,7 @@ class UserSessionController < ApplicationController
     #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow 
     #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
    
-  
+   puts request_token.authorize_url
    request_token.authorize_url+"?oauth_token=#{request_token.token}"
    access_token = client.authorize(
      request_token.token,
