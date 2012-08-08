@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentUser, :getTags
+    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :isLoggedInTwitter?
 
     protect_from_forgery
 
@@ -11,6 +11,23 @@ class ApplicationController < ActionController::Base
       else
         return false
       end
+    end
+    
+    def isLoggedInTwitter?
+      if session[:loggedInTwitter]
+         puts 'User logged in twitter'
+         return session[:loggedInTwitter]
+      else
+         return false
+      end
+    end
+    
+    def currentTwitterUser
+       if session[:currenttwitteruser]
+         return session[:currenttwitteruser]
+       else
+         return 'Not Logged In'
+       end	 
     end
 
     def currentUser

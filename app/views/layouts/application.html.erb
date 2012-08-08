@@ -25,7 +25,13 @@
            <% unless isLoggedIn? %>
               <%= link_to image_tag('login-facebook-button.png'), :fblogin %>
            <% else %>
-              <span class="label">Logged in as: <%= currentUser %></span>
+              <span class="label">Logged in facebook as: <%= currentUser %></span>
+           <% end %> 
+           <br />
+           <% unless isLoggedInTwitter? %>
+	       <%= link_to image_tag('login-twitter-button.png'), :twitterlogin %>
+	   <% else %>
+	       <span class="label">Logged in twitter as: <%= currentTwitterUser %></span>
            <% end %> 
   <div class="innertube">
    <%= yield %>

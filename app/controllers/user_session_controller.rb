@@ -38,6 +38,8 @@ class UserSessionController < ApplicationController
        # in this session.  In a larger app you would probably persist these details somewhere.
        session[:twitter_access_token] = @access_token.token
        session[:twitter_secret_access_token] = @access_token.secret
+       session[:loggedInTwitter] = true
+       session[:currenttwitteruser] = @client.info["name"]
        puts "Redirecting to home page after twitter authentication"
        flash[:notice] = "Successfully authenticated twitter account to post quotes..."
        redirect_to '/quotes'
@@ -141,6 +143,7 @@ class UserSessionController < ApplicationController
           )
 
 	  if @client.authorized?
+	     userinfo = @client.info
              @client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
              flash[:notice] = 'Tweet on your twitter account success...'
              redirect_to '/quotes'
