@@ -9,41 +9,34 @@ class UserSessionController < ApplicationController
   def login_twitter
     oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
     oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
-    client = TwitterOAuth::Client.new(
+    @client = TwitterOAuth::Client.new(
       :consumer_key => oauth_token,
       :consumer_secret => oauth_token_secret)
-    oauth_confirm_url = getAppUrl+'login/twitter/callback'
+    oauth_confirm_url = getAppUrl+'login_twitter_callback'
     puts oauth_confirm_url
-    request_token = client.request_token(:oauth_callback => oauth_confirm_url)
-    #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow 
-    #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
-   
-   puts request_token.authorize_url
-   request_token.authorize_url+"?oauth_token=#{request_token.token}"
-   access_token = client.authorize(
-     request_token.token,
-     request_token.secret,
-     :oauth_verifier => params[:oauth_verifier]
-   )
-   
-   puts client.authorized?
-   client.update('checking out the twitter_oauth library') # sends a twitter status update
-   session[:twitter_request_token] = request_token
-   session[:twitter_access_token] = access_token
-   puts access_token
-   puts "Redirecting to home page after twitter authentication"
-   flash[:notice] = "Successfully authenticated twitter account to post quotes..."
-   redirect_to '/quotes'
+    request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
+    session[:twitter_request_token] = request_token.token
+    session[:twitter_request_token_secret] = request_token.secret
+    redirect_to request_token.authorize_url
   end
   
   # Login Twitter callback
   def login_twitter_callback
-    access_token = session[:twitter_request_token].get_access_token
-    session[:twitter_access_token] = access_token
-    puts access_token
-    puts "Redirecting to home page after twitter authentication"
-    flash[:notice] = "Successfully authenticated twitter account to post quotes..."
-    redirect_to '/quotes'
+    @access_token = @client.authorize(
+        session[:twitter_request_token],
+        session[:twitter_request_token_secret],
+        :oauth_verifier => params[:oauth_verifier]
+    )
+    
+    if @client.authorized?
+       # Storing the access tokens so we don't have to go back to Twitter again
+       # in this session.  In a larger app you would probably persist these details somewhere.
+       session[:twitter_access_token] = @access_token.token
+       session[:twitter_secret_access_token] = @access_token.secret
+       puts "Redirecting to home page after twitter authentication"
+       flash[:notice] = "Successfully authenticated twitter account to post quotes..."
+       redirect_to '/quotes'
+    end
   end
 
   # Login Facebook callback
@@ -135,20 +128,17 @@ class UserSessionController < ApplicationController
         link = getAppUrl()+'quotes/'+quote.id.to_s
         puts session[:twitter_access_token]
         begin
-          access_token = @user.access_token # assuming @user
-	  client = TwitterOAuth::Client.new(
-	      :consumer_key => oauth_token,
-	      :consumer_secret => oauth_token_secret,
-	      :token => access_token.token, 
-	      :secret => access_token.secret
-	  )
-	  
-          if client.authorized?
-            client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
-          end          
-          
-          flash[:notice] = 'Tweet on your twitter account success...'
-          redirect_to '/quotes'
+          @client = TwitterOAuth::Client.new(
+	       :consumer_key => oauth_token,
+	       :consumer_secret => oauth_token_secret,
+	       :token => session[:twitter_access_token],
+	       :secret => session[:twitter_access_secret_token]
+          )
+	  if @client.authorized?
+             @client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
+             flash[:notice] = 'Tweet on your twitter account success...'
+             redirect_to '/quotes'
+          end
         rescue Exception => ex
           flash[:notice] = ex.message
           puts ex
