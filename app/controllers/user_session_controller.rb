@@ -137,8 +137,9 @@ class UserSessionController < ApplicationController
 	       :consumer_key => oauth_token,
 	       :consumer_secret => oauth_token_secret,
 	       :token => session[:twitter_access_token],
-	       :secret => session[:twitter_access_secret_token]
+	       :secret => session[:twitter_secret_access_token]
           )
+
 	  if @client.authorized?
              @client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
              flash[:notice] = 'Tweet on your twitter account success...'
