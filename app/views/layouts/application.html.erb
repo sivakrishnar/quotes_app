@@ -22,17 +22,19 @@
 
 <div id="maincontent">
   <img src='<%=asset_path "quote_header.jpg"%>' width="1200" height='100' />
+   <table><tr><td>
            <% unless isLoggedIn? %>
               <%= link_to image_tag('login-facebook-button.png'), :fblogin %>
            <% else %>
               <span class="label">Logged in facebook as: <%= currentUser %></span>
-           <% end %> 
-           <br />
+           <% end %> </td></tr>
+           <tr><td>
            <% unless isLoggedInTwitter? %>
 	       <%= link_to image_tag('login-twitter-button.png'), :twitterlogin %>
 	   <% else %>
 	       <span class="label">Logged in twitter as: <%= currentTwitterUser %></span>
            <% end %> 
+           </td></tr></table>
   <div class="innertube">
    <%= yield %>
   </div>
