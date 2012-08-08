@@ -143,6 +143,8 @@ class UserSessionController < ApplicationController
              @client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
              flash[:notice] = 'Tweet on your twitter account success...'
              redirect_to '/quotes'
+          else
+             redirect_to '/twitterlogin'
           end
         rescue Exception => ex
           flash[:notice] = ex.message
