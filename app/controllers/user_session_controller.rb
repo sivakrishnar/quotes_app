@@ -1,4 +1,16 @@
 class UserSessionController < ApplicationController
+
+  def create
+    @user = User.find_by_email_and_password(params[:email], params[:password])
+    if @user
+      flash[:notice] = "Welcome #{@user.first_name} #{@user.last_name}"
+      redirect_to '/'
+    else
+      render 'new'
+    end
+  end
+  
+  
   # Login Facebook
   def login_facebook
      url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_stream&redirect_uri=#{getAppUrl()}login/facebook/callback"
