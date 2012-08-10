@@ -5,43 +5,77 @@
   <%= stylesheet_link_tag    "application",  :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<div id="framecontentLeft">
-   <div class="innertube">
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+            <div class="container">
+            <ul class="nav">
+                <li> <h1><a class="brand" href="/">Quotable</a></h1></li>
+                <li class="active"><a href="#">Home</a></li>
+                <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories</a>
+                   <ul class="dropdown-menu">
+                     <% @categories.each do |category| %>
+                      <li><a href="/quotes?category=<%= category.name %>"><%= category.name %></a></li>
+                     <% end %> 
+                   </ul>    
+                </li>
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors</a>
+                <ul class="dropdown-menu">
+		   <% @authors.each do |author| %>
+		      <li><a href=""><%=  author %></a></li>
+		   <% end %> 
+                </ul>
+                </li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+            <form action="" class="navbar-form pull-right" >
+                <input type="text" placeholder="Search" class="span2"/>
+            </form>
+             <ul class="nav nav-pills">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
+                  <ul class="dropdown-menu">
+                    <li><% unless isLoggedIn? %>
+                          <%= link_to image_tag('login-facebook-button.png', :size => "200x25"), :fblogin %>
+                        <% else %>
+                           <span class="label">Logged in facebook as: <%= currentUser %></span>
+                        <% end %>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <% unless isLoggedInTwitter? %>
+	                  <%= link_to image_tag('login-twitter-button.png', :size => "200x25"), :twitterlogin %>
+	                <% else %>
+	                  <span class="label">Logged in twitter as: <%= currentTwitterUser %></span>
+                        <% end %>
+                    </li>
+                    <li class="divider"></li>
+                    <li><% if isLoggedIn? %><a class="btn" href="#">Logout</a><% else %><a class="btn" href="#">Login</a><% end %></li>
+                </ul>
+            </li>
+          </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row-fluid"><div class="span12"></div></div>
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+    </div>
+    <div class="span10"><br />
+      <%= yield %>
+    </div>
   </div>
 </div>
 
-<div id="framecontentRight">
-  <div class="innertube">
-
-  </div>
-</div>
-
-
-<div id="maincontent">
-  <table><tr><td><img src='<%=asset_path "quote_header.jpg"%>' width="1200" height='100' /></td>
-  <td>
-           <table><tr><td><% unless isLoggedIn? %>
-              <%= link_to image_tag('login-facebook-button.png', :size => "200x25"), :fblogin %>
-           <% else %>
-              <span class="label">Logged in facebook as: <%= currentUser %></span>
-           <% end %></td></tr>
-           <tr><td>&nbsp;&nbsp;</td></tr>
-           <tr><td>
-           <% unless isLoggedInTwitter? %>
-	       <%= link_to image_tag('login-twitter-button.png', :size => "200x25"), :twitterlogin %>
-	   <% else %>
-	       <span class="label">Logged in twitter as: <%= currentTwitterUser %></span>
-           <% end %> </td></tr>
-           </table>
-   </td>
-   </tr></table>
-  <div class="innertube">
-   <%= yield %>
-  </div>
-</div>
 
 </body>
 </html>

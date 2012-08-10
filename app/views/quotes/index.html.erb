@@ -1,7 +1,4 @@
-<% @categories.uniq.sort.each do |cat| %>
- <a href='/quotes?category=<%= cat.name %>'><%= cat.name %></a>&nbsp;&nbsp;&nbsp;&nbsp;
-<% end %>
-<br /><br />
+
 <h1>Quotes</h1><br />
 <% @quotes.each do |quote| %>
        <blockquote>

@@ -1,8 +1,26 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :isLoggedInTwitter?
-
+    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :isLoggedInTwitter?, :getCategories, :getAuthors
+    @categories = []
+    @authors = []
+    
     protect_from_forgery
+    
+    def getCategories
+      unless @categories
+        @categories = Category.select("name").find(:all)
+      else
+        return @categories
+      end
+    end
+    
+    def getAuthors
+      unless @authors
+        @authors = Quote.select("author").find(:all).collect {|tmp| tmp.author}
+      else
+        return @authors
+      end
+    end
 
     def isLoggedIn?
       if session[:loggedIn]

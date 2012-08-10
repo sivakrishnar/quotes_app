@@ -2,8 +2,9 @@ class QuotesController < ApplicationController
   # GET /quotes
   # GET /quotes.json
   def index
-    @categories = Category.all
-
+    @categories = getCategories #Category.all
+    @authors = getAuthors
+    
     if params[:category]
       category = Category.find_by_name(params[:category])
       unless category
