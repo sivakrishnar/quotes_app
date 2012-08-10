@@ -14,7 +14,8 @@ Webapp::Application.routes.draw do
   match '/posttotwitter' => 'user_session#post_to_twitter'
   match  '/login' => 'user_session#new'
   match '/register' => 'users#new'
- 
+  match '/user_sessions/create' => 'user_session#create'
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
