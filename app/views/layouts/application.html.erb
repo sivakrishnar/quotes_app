@@ -19,17 +19,21 @@
                 <li class="dropdown">
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories</a>
                    <ul class="dropdown-menu">
-                     <% @categories.each do |category| %>
+                     <% if @categories
+                        @categories.each do |category| %>
                       <li><a href="/quotes?category=<%= category.name %>"><%= category.name %></a></li>
-                     <% end %> 
+                     <% end 
+                     end %> 
                    </ul>    
                 </li>
                 <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors</a>
                 <ul class="dropdown-menu">
-		   <% @authors.each do |author| %>
+		   <% if @authors
+		      @authors.each do |author| %>
 		      <li><a href=""><%=  author %></a></li>
-		   <% end %> 
+		   <% end
+		   end %> 
                 </ul>
                 </li>
                 <li><a href="#">Settings</a></li>
@@ -56,7 +60,7 @@
                         <% end %>
                     </li>
                     <li class="divider"></li>
-                    <li><% if isLoggedIn? %><a class="btn" href="#">Logout</a><% else %><a class="btn" href="#">Login</a><% end %></li>
+                    <li><% if isLoggedIn? %><a class="btn" href="#">Logout</a><% else %><a class="btn" href="/login">Login</a>&nbsp;&nbsp;<a class="btn" href="/register">Register</a><% end %></li>
                 </ul>
             </li>
           </ul>

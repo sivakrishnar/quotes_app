@@ -1,7 +1,8 @@
 Webapp::Application.routes.draw do
   resources :quotes
-
+  resources :users
   resources :categories
+  resources :user_sessions
 
   match '/fblogin' => 'user_session#login_facebook'
   match '/login/facebook/callback' => 'user_session#login_facebook_callback'
@@ -11,7 +12,9 @@ Webapp::Application.routes.draw do
   match '/twitterlogin' => 'user_session#login_twitter'
   match '/login_twitter_callback' => 'user_session#login_twitter_callback'
   match '/posttotwitter' => 'user_session#post_to_twitter'
-
+  match  '/login' => 'user_session#new'
+  match '/register' => 'users#new'
+ 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
