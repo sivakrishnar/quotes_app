@@ -26,7 +26,7 @@ class QuotesController < ApplicationController
   
   
   def authors
-    @authors = getAuthors
+    @authors = getAuthors.uniq.sort
 
     respond_to do |format|
       format.html

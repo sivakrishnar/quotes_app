@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     
     def getAuthors
       unless @authors
-        @authors = Quote.select("author").find(:all).collect {|tmp| tmp.author}
+        @authors = Quote.select("distinct author").find(:all).collect {|tmp| tmp.author}
       else
         return @authors
       end
