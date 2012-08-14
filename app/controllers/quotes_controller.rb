@@ -29,6 +29,7 @@ class QuotesController < ApplicationController
     @authors = getAuthors
 
     respond_to do |format|
+      format.html
       format.xml { render :xml => @authors }
       format.json { render :json => @authors }
     end
