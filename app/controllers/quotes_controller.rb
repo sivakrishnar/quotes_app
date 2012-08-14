@@ -23,6 +23,18 @@ class QuotesController < ApplicationController
       format.json { render :json => @quotes }
     end
   end
+  
+  
+  def authors
+    @authors = getAuthors
+
+    respond_to do |format|
+      format.xml { render :xml => @authors }
+      format.json { render :json => @authors }
+    end
+
+  end
+
 
   # GET /quotes/1
   # GET /quotes/1.json
