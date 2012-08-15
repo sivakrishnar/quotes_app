@@ -84,7 +84,7 @@ class UserSessionController < ApplicationController
     require 'rest_client'
 
     str_error = "There was an error trying to login to your Facebook account, please try again."
-
+    puts "login facebook callback request received...#{request.url}"
     if(params[:error] and params[:error] != '')
        flash[:error] = str_error
        puts params[:error]
