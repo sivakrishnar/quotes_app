@@ -1,11 +1,11 @@
 module ApplicationHelper
 
   def getTwitterConsumerKey()
-    return 'twitter_consumer_key'
+    return '0pq5YGD7IU2CFYbA2cYiw'
   end
 
   def getTwitterConsumerSecret()
-    return 'twitter_secret_key'
+    return "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
   end
 
   def getGoogleClientId()
@@ -34,5 +34,6 @@ module ApplicationHelper
     str = URI.escape(url)
     return str
   end
+
 
 end

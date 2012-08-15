@@ -85,6 +85,7 @@
       <!--Sidebar content-->
     </div>
     <div class="span11"><br />
+       <%= render :partial => "shared/flash_messages", :locals => {:flash => flash} %>
       <%= yield %>
     </div>
   </div>

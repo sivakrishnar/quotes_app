@@ -1,26 +1,33 @@
 class UserSessionController < ApplicationController
-  def new
 
+  def new
+    if isLoggedIn?
+      reset_session
+    else
+      puts 'Rendering login page...'
+    end
   end
 
-   def create 
+  def create 
      user = User.authenticate(params[:user_session][:email], params[:user_session][:password])  
      if user  
         session[:user_id] = user.id  
+	session[:loggedIn] = true
 	puts "Logged in #{session[:user_id]}"
-	p session
         redirect_to root_url, :notice => "Logged in!"  
      else
         puts "Invalid email or password"
         flash.now.alert = "Invalid email or password"  
         render "new"  
      end  
-   end  
+  end  
     
-   def destroy  
-     session[:user_id] = nil  
+  def destroy  
+     session[:user_id] = nil
+     session[:loggedIn] = false
+     reset_session
      redirect_to root_url, :notice => "Logged out!"  
-   end 
+  end 
 
   # Login Facebook
   def login_facebook
@@ -30,13 +37,14 @@ class UserSessionController < ApplicationController
   
   # Login Twitter
   def login_twitter
-    oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
-    oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
+    ###oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
+    ###oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
     @client = TwitterOAuth::Client.new(
-      :consumer_key => oauth_token,
-      :consumer_secret => oauth_token_secret)
-    oauth_confirm_url = getAppUrl+'login_twitter_callback'
-    puts oauth_confirm_url
+      :consumer_key => getTwitterConsumerKey(),
+      :consumer_secret => getTwitterConsumerSecret()
+      )
+    oauth_confirm_url = getAppUrl()+'login_twitter_callback'
+    ####puts oauth_confirm_url
     request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
     session[:twitter_request_token] = request_token.token
     session[:twitter_request_token_secret] = request_token.secret
@@ -45,11 +53,12 @@ class UserSessionController < ApplicationController
   
   # Login Twitter callback
   def login_twitter_callback
-   oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
-   oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
+   ###oauth_token = getTwitterConsumerKey()
+   ###oauth_token_secret = getTwitterConsumerSecret()
    @client = TwitterOAuth::Client.new(
-      :consumer_key => oauth_token,
-      :consumer_secret => oauth_token_secret)
+      :consumer_key => getTwitterConsumerKey(),
+      :consumer_secret => getTwitterConsumerSecret()
+      )
    @access_token = @client.authorize(
         session[:twitter_request_token],
         session[:twitter_request_token_secret],
@@ -61,8 +70,8 @@ class UserSessionController < ApplicationController
        # in this session.  In a larger app you would probably persist these details somewhere.
        session[:twitter_access_token] = @access_token.token
        session[:twitter_secret_access_token] = @access_token.secret
-       session[:loggedInTwitter] = true
-       session[:currenttwitteruser] = @client.info["name"]
+       session[:twitter_loggedIn] = true
+       session[:twitter_currentuser] = @client.info["name"]
        puts "Redirecting to home page after twitter authentication"
        flash[:notice] = "Successfully authenticated twitter account to post quotes..."
        redirect_to '/quotes'
@@ -79,7 +88,7 @@ class UserSessionController < ApplicationController
     if(params[:error] and params[:error] != '')
        flash[:error] = str_error
        puts params[:error]
-       redirect_to '/fblogin'
+       redirect_to '/login'
     elsif(params[:code] and params[:code] != '')
       puts "Got code back..."
        code = params[:code]
@@ -88,14 +97,16 @@ class UserSessionController < ApplicationController
        r = RestClient.get url
        puts r.to_s.gsub(/\&expires\=\d*$/,'')
        access_token = r.to_s.split("access_token=")[1]
-       session[:access_token] = access_token.gsub(/\&expires\=\d*$/,'')
-       puts uri_escape(session[:access_token])
-       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(session[:access_token])}"
+       session[:facebook_access_token] = access_token.gsub(/\&expires\=\d*$/,'')
+       graph_url = "https://graph.facebook.com/me?access_token=#{uri_escape(session[:facebook_access_token])}"
        puts graph_url
        r = RestClient.get graph_url
        user = JSON.parse(r.to_s)
-       doFacebookLogin(user)
-       flash[:notice] = "You have logged in successfully, access_token is #{session[:access_token]}"
+       session[:facebook_loggedIn] = true
+       session[:facebook_currentuser] = user['first_name']+' '+user['last_name']
+       session[:facebook_username] = user['username']
+       puts "#{user} logged in successfully with facebook #{user.class}"
+       flash[:notice] = "Facebook authentication successfull, Now you can share to your facebook wall."
        redirect_to '/quotes'
     else
        flash[:error] = str_error
@@ -104,36 +115,36 @@ class UserSessionController < ApplicationController
     end
   end
 
-  def doFacebookLogin(user)
-    puts "#{user} logged in successfully with facebook #{user.class}"
-    puts 'Storing first name in session ...'+user['first_name']
-    session[:currentuser] = user['first_name']
-    session[:username] = user['username']
-    session[:loggedIn] = true
-  end
-
   def logout_facebook
-    url = "https://www.facebook.com/logout.php?next=#{getAppUrl()}&access_token=#{session[:access_token]}"
-    puts url
-    reset_session
-    redirect_to url
+    ##url = "https://www.facebook.com/logout.php?next=#{getAppUrl()}&access_token=#{session[:access_token]}"
+    ##puts url
+    session[:facebook_loggedIn] = false
+    session[:facebook_access_token] = nil
+    session[:facebook_currentuser] = nil
+    session[:facebook_username] = nil
+    redirect_to '/'
   end
 
   def post_to_facebook()
    require 'json'
    require 'rest_client'
+   quote_id = params[:quote_id]
 
-   login_facebook unless session or session.has_key?access_token or session[:access_token]
-   if params[:quote_id]
-      quote = Quote.find(params[:quote_id])
+   if not session 
+     redirect_to '/login'
+     return
+   elsif not session[:facebook_access_token]
+      redirect_to '/fblogin'
+   end
+
+   if quote_id
+      quote = Quote.find(quote_id)
       puts "Posting quote #{quote.quote}"
       link = getAppUrl()+'quotes/'+quote.id.to_s
-      puts session[:access_token]
-      puts uri_escape(session[:access_token]) 
-      url = "https://graph.facebook.com/#{session[:username]}/feed?access_token=#{uri_escape(session[:access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=#{uri_escape('Posted via QuotesApp')}"
-      puts url
+      ####url = "https://graph.facebook.com/#{session[:facebook_username]}/feed?access_token=#{uri_escape(session[:facebook_access_token])}&message=#{uri_escape(quote.quote)}&link=#{link}&caption=#{uri_escape('Posted via QuotesApp')}"
+      ####puts url
       begin
-        r = RestClient.post "https://graph.facebook.com/#{session[:username]}/feed", { :access_token => session[:access_token], :message => "#{quote.quote} -- by #{quote.author}", :link => "http://quotesapp.herokuapp.com/quotes/#{params[:quote_id]}", :caption => "Shared via quotesapp", :icon => "http://quotesapp.herokuapp.com/assets/quote_header.jpg" }
+        r = RestClient.post "https://graph.facebook.com/#{session[:facebook_username]}/feed", { :access_token => session[:facebook_access_token], :message => "#{quote.quote} -- by #{quote.author}", :link => "http://quotesapp.herokuapp.com/quotes/#{params[:quote_id]}", :caption => "Shared via quotesapp", :icon => "http://quotesapp.herokuapp.com/assets/quote_header.jpg" }
         responsegot = JSON.parse r.to_s
         flash[:notice] = 'Share on your facebook timeline success...'
         redirect_to '/quotes'
@@ -142,25 +153,27 @@ class UserSessionController < ApplicationController
         puts ex
         redirect_to '/quotes'
       end
-      #client = FBGraph::Client.new(:client_id => getFacebookApiKey(), :secret_id => getFacebookSecret() ,:token => session[:access_token])
-      #user = client.selection.me.info!
-      #client.selection.me.publish!(:message => quote.quote, :name => 'QuotesApp', :link => getAppUrl()+'quotes/'+quote.id.to_s)
     end
   end
   
    def post_to_twitter()
-     oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
-     oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
-     login_twitter unless session or session.has_key?twitter_access_token or session[:twitter_access_token]
+     ####oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
+     ####oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
+     if not session
+       redirect_to '/login'
+       return
+     elsif not session[:twitter_access_token] or not session[:twitter_secret_access_token]
+       redirect_to '/twitterlogin'
+     end
+
      if params[:quote_id]
         quote = Quote.find(params[:quote_id])
         puts "Tweeting quote #{quote.quote}"
         link = getAppUrl()+'quotes/'+quote.id.to_s
-        puts session[:twitter_access_token]
         begin
           @client = TwitterOAuth::Client.new(
-	       :consumer_key => oauth_token,
-	       :consumer_secret => oauth_token_secret,
+	       :consumer_key => getTwitterConsumerKey(),
+	       :consumer_secret => getTwitterConsumerSecret(),
 	       :token => session[:twitter_access_token],
 	       :secret => session[:twitter_secret_access_token]
           )
@@ -168,7 +181,7 @@ class UserSessionController < ApplicationController
 	  if @client.authorized?
 	     userinfo = @client.info
              @client.update(quote.quote+" -- #{quote.author}, Posted via #{link}")
-             flash[:notice] = 'Tweet on your twitter account success...'
+             flash[:notice] = 'Tweeted successfully to your twitter account...'
              redirect_to '/quotes'
           else
              redirect_to '/twitterlogin'

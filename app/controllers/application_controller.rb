@@ -3,7 +3,8 @@ class ApplicationController < ActionController::Base
     helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :isLoggedInTwitter?, :getCategories, :getAuthors
     @categories = []
     @authors = []
-    
+    @tags = []
+
     protect_from_forgery
     
     def getCategories
@@ -22,47 +23,51 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    #### main logged in method
     def isLoggedIn?
-      @current_user ||= User.find(session[:user_id]) if session[:user_id]  
+      session[:loggedIn] ? true : false 
     end
     
     def isLoggedInTwitter?
-      if session[:loggedInTwitter]
-         puts 'User logged in twitter'
-         return session[:loggedInTwitter]
-      else
-         return false
-      end
+      session[:twitter_loggedIn] ? true : false
     end
     
     def currentTwitterUser
-       if session[:currenttwitteruser]
-         return session[:currenttwitteruser]
-       else
-         return 'Not Logged In'
-       end	 
+       session[:twitter_currentuser] ? session[:twitter_currentuser] : nil
+    end
+
+    def isLoggedInFacebook?
+      session[:facebook_loggedIn] ? true : false
+    end
+
+    def currentFacebookUser
+      session[:facebook_currentuser] ? session[:facebook_currentuser] : nil
     end
 
     def currentUser
-       if session[:currentuser]
-         return session[:currentuser]
-       else
-         return 'Not Logged In'
-       end	 
+      if session[:user_id]
+         @current_user ||= User.find(session[:user_id]) if session[:user_id]
+      else
+         return nil
+      end	 
     end
     
     def getTags
-      quotes = Quote.select('tags').find(:all)
-      @alltags = [] 
-      quotes.each do |quote|
-        if quote
-          if quote.tags
-            tags = quote.tags.split(' ')
-            tags.each do |tag|
-              @alltags.push tag unless @alltags.include?tag
+      unless @tags
+        quotes = Quote.select('tags').find(:all)
+        @alltags = [] 
+        quotes.each do |quote|
+          if quote
+            if quote.tags
+              tags = quote.tags.split(' ')
+              tags.each do |tag|
+                @alltags.push tag unless @alltags.include?tag
+              end
             end
           end
         end
+      else
+        return @tags
       end
     end
 
