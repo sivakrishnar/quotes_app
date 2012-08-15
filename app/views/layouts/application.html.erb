@@ -9,7 +9,7 @@
  <style>
  
  html {
-   overflow-y: scroll;
+   overflow-y: auto;
    font-size: 100%;
    -webkit-text-size-adjust: 100%;
    -ms-text-size-adjust: 100%;
@@ -25,7 +25,7 @@
         <div class="container-fluid">
           <ul class="nav">
                 <li> <h1><a class="brand" href="/">Quotable</a></h1></li>
-                <li class="active"><a href="#">Home</a></li>
+                <li class="active"><a href="<%= root_url %>">Home</a></li>
                 <li class="dropdown">
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories</a>
                    <ul class="dropdown-menu">
@@ -46,7 +46,7 @@
 		   end %> 
                 </ul>
                 </li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="/settings">Settings</a></li>
             </ul>
             <form action="" class="navbar-form pull-right" >
                 <input type="text" placeholder="Search" class="span2"/>
@@ -79,7 +79,7 @@
 </div>
 <hr>
 
-<div class="container-fluid" style="overflow:scroll">
+<div class="container-fluid" style="overflow:auto">
   <div class="row-fluid">
     <div class="span1">
       <!--Sidebar content-->
