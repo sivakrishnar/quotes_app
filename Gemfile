@@ -27,5 +27,6 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'bcrypt-ruby', :require => 'bcrypt'  
 
 

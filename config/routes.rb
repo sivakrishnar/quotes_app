@@ -1,4 +1,6 @@
 Webapp::Application.routes.draw do
+  get "users/new"
+
   resources :quotes
   resources :users
   resources :categories
@@ -14,6 +16,8 @@ Webapp::Application.routes.draw do
   match '/posttotwitter' => 'user_session#post_to_twitter'
   match  '/login' => 'user_session#new'
   match '/register' => 'users#new'
+  match '/logout' => 'user_session#destroy'
+
   match '/user_sessions/create' => 'user_session#create'
   match '/authors' => 'quotes#authors'
 

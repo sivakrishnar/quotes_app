@@ -23,12 +23,7 @@ class ApplicationController < ActionController::Base
     end
 
     def isLoggedIn?
-      if session[:loggedIn]
-        puts 'User logged in'
-        return session[:loggedIn]
-      else
-        return false
-      end
+      @current_user ||= User.find(session[:user_id]) if session[:user_id]  
     end
     
     def isLoggedInTwitter?
