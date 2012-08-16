@@ -55,6 +55,7 @@ class UserSessionController < ApplicationController
   def login_twitter_callback
    ###oauth_token = getTwitterConsumerKey()
    ###oauth_token_secret = getTwitterConsumerSecret()
+   puts "Twitter login callback ... #{request.url}"
    @client = TwitterOAuth::Client.new(
       :consumer_key => getTwitterConsumerKey(),
       :consumer_secret => getTwitterConsumerSecret()

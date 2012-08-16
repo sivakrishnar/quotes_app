@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :isLoggedInTwitter?, :getCategories, :getAuthors
+    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :currentFacebookUser, :isLoggedInTwitter?, :isLoggedInFacebook?, :getCategories, :getAuthors
     @categories = []
     @authors = []
     @tags = []
