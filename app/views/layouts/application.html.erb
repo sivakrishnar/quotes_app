@@ -54,7 +54,7 @@
                 <li><a href="/settings">Settings</a></li>
             </ul>
             <form action="" class="navbar-form pull-right" >
-                <input type="text" placeholder="Search" class="span2"/>
+                <input type="text" placeholder="Search" class="span3"/>
             </form>
              <ul class="nav nav-pills">
                 <li class="dropdown">
@@ -89,10 +89,16 @@
     <div class="span1">
       <!--Sidebar content-->
     </div>
-    <div class="span11"><br />
+    <div class="span8"><br />
        <%= render :partial => "shared/flash_messages", :locals => {:flash => flash} %>
       <%= yield %>
     </div>
+    <div class="span2">
+      <% @tags.each do |tag| %>
+        <a href='/quotes?tag=<%= tag %>' ><%= tag %></a><br />
+      <% end %>
+    </div>
+
   </div>
 </div>
 

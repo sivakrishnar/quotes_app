@@ -55,17 +55,18 @@ class ApplicationController < ActionController::Base
     def getTags
       unless @tags
         quotes = Quote.select('tags').find(:all)
-        @alltags = [] 
+        @tags = [] 
         quotes.each do |quote|
           if quote
             if quote.tags
               tags = quote.tags.split(' ')
               tags.each do |tag|
-                @alltags.push tag unless @alltags.include?tag
+                @tags.push tag unless @tags.include?tag
               end
             end
           end
         end
+	return @tags
       else
         return @tags
       end
