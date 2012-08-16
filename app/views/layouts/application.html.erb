@@ -63,7 +63,7 @@
                     <li><% unless isLoggedInFacebook? %>
                           <%= link_to image_tag('login-facebook-button.png', :size => "200x25"), :fblogin %>
                         <% else %>
-                           <span class="label">Logged in facebook as: <%= currentUser %></span>
+                           <span class="label">Logged in facebook as: <%= currentFacebookUser %></span>
                         <% end %>
                     </li>
                     <li class="divider"></li>
