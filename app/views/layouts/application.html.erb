@@ -11,6 +11,10 @@
   <%= stylesheet_link_tag    "application",  :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+  <script type="text/javascript">stLight.options({publisher: "5a4471d2-228b-47be-9f6b-83358c01ebe4"}); </script>
+
  <style>
  
  html {
@@ -52,6 +56,15 @@
                 </ul>
                 </li>
                 <li><a href="/settings">Settings</a></li>
+	   </ul>
+	   <ul class="nav pull-right">
+		<li>
+		<span class='st_facebook_large' displayText='Facebook'></span>
+		<span class='st_twitter_large' displayText='Tweet'></span>
+		<span class='st_pinterest_large' displayText='Pinterest'></span>
+		<span class='st_sharethis_large' displayText='ShareThis'></span>
+		<span class='st_blogger_large' displayText='Blogger'></span>
+		<span class='st_linkedin_large' displayText='LinkedIn'></span></li>
             </ul>
             <form action="" class="navbar-form pull-right" >
                 <input type="text" placeholder="Search" class="span3"/>
@@ -94,7 +107,8 @@
       <%= yield %>
     </div>
     <div class="span2">
-      <% @tags.each do |tag| %>
+      <h2>Tags</h2>
+      <% getTags.each do |tag| %>
         <a href='/quotes?tag=<%= tag %>' ><%= tag %></a><br />
       <% end %>
     </div>

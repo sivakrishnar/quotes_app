@@ -11,10 +11,13 @@ class QuotesController < ApplicationController
         @quotes = []
       else	
         @quotes = Quote.find_all_by_category_id(category.id)
-      end	
+      end
+    elsif params[:tag]
+      @quotes = Quote.where("tags like '%#{params[:tag]}%' ")
     else
       @quotes = Quote.all
     end
+
     @tags = getTags
     
     respond_to do |format|

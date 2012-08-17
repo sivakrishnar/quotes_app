@@ -17,7 +17,8 @@ class UserSessionController < ApplicationController
         redirect_to root_url, :notice => "Logged in!"  
      else
         puts "Invalid email or password"
-        flash.now.alert = "Invalid email or password"  
+        flash.now.alert = "Invalid email or password" 
+	reset_session
         render "new"  
      end  
   end  
@@ -31,24 +32,29 @@ class UserSessionController < ApplicationController
 
   # Login Facebook
   def login_facebook
-     url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_stream&redirect_uri=#{getAppUrl()}login/facebook/callback"
-     redirect_to url
+     if isLoggedIn?
+       url = "https://www.facebook.com/dialog/oauth?client_id=#{getFacebookApiKey()}&scope=email,publish_stream&redirect_uri=#{getAppUrl()}login/facebook/callback"
+       redirect_to url
+     else
+       redirect_to login_url, :notice => "Please login"
+     end
   end
   
   # Login Twitter
   def login_twitter
-    ###oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
-    ###oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
-    @client = TwitterOAuth::Client.new(
-      :consumer_key => getTwitterConsumerKey(),
-      :consumer_secret => getTwitterConsumerSecret()
-      )
-    oauth_confirm_url = getAppUrl()+'login_twitter_callback'
-    ####puts oauth_confirm_url
-    request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
-    session[:twitter_request_token] = request_token.token
-    session[:twitter_request_token_secret] = request_token.secret
-    redirect_to request_token.authorize_url
+    if isLoggedIn?
+       @client = TwitterOAuth::Client.new(
+                        :consumer_key => getTwitterConsumerKey(),
+                        :consumer_secret => getTwitterConsumerSecret()
+                        )
+       oauth_confirm_url = getAppUrl()+'login_twitter_callback'
+       request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
+       session[:twitter_request_token] = request_token.token
+       session[:twitter_request_token_secret] = request_token.secret
+       redirect_to request_token.authorize_url
+     else
+       redirect_to login_url, :notice => "Please login"
+     end
   end
   
   # Login Twitter callback

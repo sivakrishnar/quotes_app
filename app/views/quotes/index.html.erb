@@ -1,15 +1,14 @@
 
 <h1>Quotes</h1><br />
 <% @quotes.each do |quote| %>
-      <div class="well">
        <blockquote>
            <strong><%= quote.quote %> </strong>
            <small><%= quote.author %></small>
-           <a href='/posttofb?quote_id=<%= quote.id %>'>Share</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='/posttotwitter?quote_id=<%= quote.id %>'>Tweet</a><br /><br />
-           <em>Category:</em> <a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name %></a> &nbsp;&nbsp;&nbsp;
-           <span class="label label-success">Tags:</span> <%= quote.tags %>
+           <% quote.tags.split.uniq.each do |tag| %><a href='/quotes?tag=<%= tag %>'><%= tag.downcase %></a>&nbsp;&nbsp;&nbsp;<% end %>
+	   <br /><strong>Category:&nbsp;&nbsp;</strong><a href='/quotes?category=<%= quote.category.name %>'><%= quote.category.name.downcase %></a><br />
+	   <a href='/posttofb?quote_id=<%= quote.id %>'><%= image_tag('fb_share_icon.gif') %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	   <a href='/posttotwitter?quote_id=<%= quote.id %>'><%= image_tag('tweet_share_icon.png') %></a>
        </blockquote>
-      </div>  
 <% end %>
 
 <br />
