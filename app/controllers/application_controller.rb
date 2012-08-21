@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
             end
           end
         end
-	return @tags
+	return @tags.uniq.sort
       else
         return @tags
       end
