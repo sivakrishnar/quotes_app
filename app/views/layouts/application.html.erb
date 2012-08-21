@@ -115,9 +115,11 @@
       <br />
       <br />
       <h2>Authors</h2>
-      <% @authors.each_slice(3) do |sauthors| %>
+      <% if @authors
+          @authors.each_slice(3) do |sauthors| %>
          <% sauthors.each do |author| %>
 	   <a  href="/quotes?author=<%= author %>"><%= author.capitalize %></a>,&nbsp;&nbsp;&nbsp;&nbsp;
+	 <% end %>
 	 <% end %>
       <% end %>
     </div>
