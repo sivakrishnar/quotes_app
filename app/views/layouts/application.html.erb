@@ -56,12 +56,9 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors</a>
                 <ul class="dropdown-menu">
 		   <% if @authors
-		      @authors.each_slice(3) do |sauthors| %>
-		      <li>
-		        <% sauthors.each do |author| %>
-		          <a href="/quotes?author=<%= author %>"><%=  author.capitalize %></a>&nbsp;&nbsp;
+		        <% @authors.each do |author| %>
+		          <li><a href="/quotes?author=<%= author %>"><%=  author.capitalize %></a></li>
 	 	        <% end %>
-		      </li>
 		   <% end
 		   end %> 
                 </ul>
