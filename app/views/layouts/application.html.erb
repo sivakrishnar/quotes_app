@@ -32,8 +32,15 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-          <ul class="nav">
-                <li> <h1><a class="brand" href="/">Quotable</a></h1></li>
+	  <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+	  <a href="/" class="brand">Quotable</a>
+          <div class="nav-collapse">
+	   <ul class="nav">
                 <li class="active"><a href="<%= root_url %>">Home</a></li>
                 <li class="dropdown">
                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories</a>
@@ -55,21 +62,12 @@
 		   end %> 
                 </ul>
                 </li>
-                <li><a href="/settings">Settings</a></li>
-	   </ul>
-	   <ul class="nav pull-right">
-		<li>
-		<span class='st_facebook_large' displayText='Facebook'></span>
-		<span class='st_twitter_large' displayText='Tweet'></span>
-		<span class='st_pinterest_large' displayText='Pinterest'></span>
-		<span class='st_sharethis_large' displayText='ShareThis'></span>
-		<span class='st_blogger_large' displayText='Blogger'></span>
-		<span class='st_linkedin_large' displayText='LinkedIn'></span></li>
-            </ul>
+	    </ul>
             <form action="" class="navbar-form pull-right" >
                 <input type="text" placeholder="Search" class="span3"/>
             </form>
-             <ul class="nav nav-pills">
+	    </ul>
+            <ul class="nav nav-pills">
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account</a>
                   <ul class="dropdown-menu">
@@ -92,6 +90,7 @@
                 </ul>
             </li>
           </ul>
+	 </div> 
 	</div>     
     </div>
 </div>
@@ -118,6 +117,15 @@
 
 <hr>
 
-<footer><p>&copy; Quoteable 2012</p></footer>
+<footer><b>&copy; Quoteable 2012</b>
+   <table class="pull-right">
+   <tr><td><span class='st_facebook_large' displayText='Facebook'></span>
+   <span class='st_twitter_large' displayText='Tweet'></span>
+   <span class='st_pinterest_large' displayText='Pinterest'></span>
+   <span class='st_sharethis_large' displayText='ShareThis'></span>
+   <span class='st_blogger_large' displayText='Blogger'></span>
+   <span class='st_linkedin_large' displayText='LinkedIn'></span>
+   </td></tr></table> 
+</footer>
 </body>
 </html>

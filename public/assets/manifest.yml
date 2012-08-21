@@ -1,4 +1,5 @@
 --- 
+tweet_share_icon.png: tweet_share_icon-0e57dbf7faca7042937b579e6318a47c.png
 login-twitter-button.png: login-twitter-button-6f9f1136dbba94b5ef405161e409ffe8.png
 glyphicons-halflings-white.png: glyphicons-halflings-white-13553a5bf21ae3cc374006592488ec64.png
 quote_header.jpg: quote_header-1ba131079ce7ace1f04befcfe2889afb.jpg
@@ -7,6 +8,7 @@ application.css: application-c7a64f74c89d7541fa320d8600f95ab0.css
 facebook_64.png: facebook_64-8f130f5352bbd02d99d52b833043d865.png
 facebook_128.png: facebook_128-75156eab5111643bd3a8f8b963513228.png
 glyphicons-halflings.png: glyphicons-halflings-f6675c325532ec11a984d58e172b8e2a.png
-application.js: application-315e5840df9ef72addd5711ad8491044.js
+application.js: application-aec12aeed5004ba618ecad753084642c.js
 login-facebook-button.png: login-facebook-button-55a42b81d68791851266642155766f93.png
+fb_share_icon.gif: fb_share_icon-9c2f625d4621a39d9e80be0c349a8cc1.gif
 facebook_32.png: facebook_32-56cd78cb046f8c110edbea8580a52c39.png
