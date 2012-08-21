@@ -14,6 +14,8 @@ class QuotesController < ApplicationController
       end
     elsif params[:tag]
       @quotes = Quote.where("tags like '%#{params[:tag]}%' ")
+    elsif params[:author]
+      @quotes = Quote.where("author like '%#{params[:author]}%' ")
     else
       @quotes = Quote.all
     end
