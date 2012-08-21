@@ -56,8 +56,12 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors</a>
                 <ul class="dropdown-menu">
 		   <% if @authors
-		      @authors.each do |author| %>
-		      <li><a href="/quotes?author=<%= author %>"><%=  author %></a></li>
+		      @authors.each_slice(3) do |sauthors| %>
+		      <li>
+		        <% sauthors.each do |author| %>
+		          <a href="/quotes?author=<%= author %>"><%=  author.capitalize %></a>&nbsp;&nbsp;
+	 	        <% end %>
+		      </li>
 		   <% end
 		   end %> 
                 </ul>
@@ -107,8 +111,10 @@
     </div>
     <div class="span2">
       <h2>Tags</h2>
-      <% getTags.each do |tag| %>
-        <a href='/quotes?tag=<%= tag %>' ><%= tag %></a><br />
+      <% getTags.each_slice(5) do |stags| %>
+        <% stags.each do |tag| %>
+           <a href='/quotes?tag=<%= tag %>' ><%= tag.capitalize %></a>&nbsp;&nbsp;
+	<% end %><br />
       <% end %>
     </div>
 
