@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     end
 
     def getStoredUrl
-      session[:from_url] ? sessuib[:from_url] : request.env['HTTP_HOST']+'/'
+      session[:from_url] ? session[:from_url] : request.env['HTTP_HOST']+'/'
     end
 
     #### main logged in method
