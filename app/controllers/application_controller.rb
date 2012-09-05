@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     include ApplicationHelper
-    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :currentFacebookUser, :isLoggedInTwitter?, :isLoggedInFacebook?, :getCategories, :getAuthors
+    helper_method :isLoggedIn?, :currentUser, :getTags, :currentTwitterUser, :currentFacebookUser, :isLoggedInTwitter?, :isLoggedInFacebook?, :getCategories, :getAuthors, :store_url, :getStoredUrl
     @categories = []
     @authors = []
     @tags = []
@@ -23,9 +23,22 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def store_url
+      session[:from_url] = request.url
+    end
+
+    def getStoredUrl
+      session[:from_url] ? sessuib[:from_url] : request.env['HTTP_HOST']+'/'
+    end
+
     #### main logged in method
     def isLoggedIn?
-      session[:loggedIn] ? true : false 
+      if session[:loggedIn] 
+        true 
+      else
+        store_url
+        false
+      end	
     end
     
     def isLoggedInTwitter?

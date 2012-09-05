@@ -14,7 +14,7 @@ class UserSessionController < ApplicationController
         session[:user_id] = user.id  
 	session[:loggedIn] = true
 	puts "Logged in #{session[:user_id]}"
-        redirect_to root_url, :notice => "Logged in!"  
+        redirect_to getStoredurl, :notice => "Logged in!"  
      else
         puts "Invalid email or password"
         flash.now.alert = "Invalid email or password" 
