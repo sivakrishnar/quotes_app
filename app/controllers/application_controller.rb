@@ -24,8 +24,8 @@ class ApplicationController < ActionController::Base
     end
 
     def store_url
-      puts request.url
-      session[:from_url] = request.url
+      puts request.referrer
+      session[:from_url] = request.referrer
     end
 
     def getStoredUrl
