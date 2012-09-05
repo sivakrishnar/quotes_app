@@ -137,10 +137,10 @@ class UserSessionController < ApplicationController
    require 'rest_client'
    quote_id = params[:quote_id]
 
-   if not session 
+   if not isLoggedIn? 
      redirect_to '/login'
      return
-   elsif not session[:facebook_access_token]
+   elsif not isLoggedInFacebook?
       redirect_to '/fblogin'
    end
 
@@ -166,10 +166,10 @@ class UserSessionController < ApplicationController
    def post_to_twitter()
      ####oauth_token = "0pq5YGD7IU2CFYbA2cYiw"
      ####oauth_token_secret = "mO1NbrDJidvxXL5i4itbvKMkF2ny1bokOBJ4NII"
-     if not session
+     if not isLoggedIn?
        redirect_to '/login'
        return
-     elsif not session[:twitter_access_token] or not session[:twitter_secret_access_token]
+     elsif not isLoggedInTwitter?
        redirect_to '/twitterlogin'
      end
 
