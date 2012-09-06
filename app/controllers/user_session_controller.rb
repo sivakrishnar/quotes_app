@@ -114,7 +114,7 @@ class UserSessionController < ApplicationController
        session[:facebook_username] = user['username']
        puts "#{user} logged in successfully with facebook #{user.class}"
        flash[:notice] = "Facebook authentication successfull, Now you can share to your facebook wall."
-       redirect_to '/quotes'
+       redirect_to getStoredUrl
     else
        flash[:error] = str_error
        puts "unknown error"
@@ -129,7 +129,7 @@ class UserSessionController < ApplicationController
     session[:facebook_access_token] = nil
     session[:facebook_currentuser] = nil
     session[:facebook_username] = nil
-    redirect_to '/'
+    redirect_to getStoredUrl
   end
 
   def post_to_facebook()
