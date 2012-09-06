@@ -142,6 +142,7 @@ class UserSessionController < ApplicationController
      return
    elsif not isLoggedInFacebook?
       redirect_to '/fblogin'
+      return
    end
 
    if quote_id
@@ -171,6 +172,7 @@ class UserSessionController < ApplicationController
        return
      elsif not isLoggedInTwitter?
        redirect_to '/twitterlogin'
+       return
      end
 
      if params[:quote_id]
